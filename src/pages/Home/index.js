@@ -55,40 +55,55 @@ class Home extends Component {
         <FlatList
           horizontal
           data={products}
+          extraData={this.props}
           keyExtractor={product => String(product.id)}
-          renderItem={({ item }) => (
-            <ItemProduct>
-              <ItemImage source={{ uri: item.image }} />
-              <Title numberOfLines={2}>{item.title}</Title>
-              <Price>{item.priceFormatted}</Price>
-              <Button onPress={() => this.handleAddProduct(item)}>
-                <ItensQtde>
-                  <Icon name="add-shopping-cart" size={20} color="#FFF" />
-                  <Text style={{ marginLeft: 5, color: '#FFF' }}>2</Text>
-                </ItensQtde>
-                <Text
-                  style={{
-                    color: '#FFF',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    width: 147,
-                  }}
-                >
-                  ADICIONAR
-                </Text>
-              </Button>
-            </ItemProduct>
-          )}
+          renderItem={({ item }) => {
+            const { amount } = this.props;
+
+            return (
+              <ItemProduct>
+                <ItemImage source={{ uri: item.image }} />
+                <Title numberOfLines={2}>{item.title}</Title>
+                <Price>{item.priceFormatted}</Price>
+                <Button onPress={() => this.handleAddProduct(item)}>
+                  <ItensQtde>
+                    <Icon name="add-shopping-cart" size={20} color="#FFF" />
+                    <Text style={{ marginLeft: 5, color: '#FFF' }}>
+                      {amount[item.id] || 0}
+                    </Text>
+                  </ItensQtde>
+                  <Text
+                    style={{
+                      color: '#FFF',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      width: 147,
+                    }}
+                  >
+                    ADICIONAR
+                  </Text>
+                </Button>
+              </ItemProduct>
+            );
+          }}
         />
       </Container>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  amount: state.cart.reduce((amount, product) => {
+    amount[product.id] = product.amount;
+
+    return amount;
+  }, {}),
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(CartActions, dispatch);
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Home);
