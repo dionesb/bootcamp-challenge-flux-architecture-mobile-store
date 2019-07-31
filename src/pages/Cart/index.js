@@ -25,8 +25,9 @@ import {
   ButtonFinalizar,
   FinalizarText,
 } from './styles';
+import { formatPrice } from '../../util/format';
 
-function Cart({ cart, removeFromCart, updateAmount }) {
+function Cart({ cart, total, removeFromCart, updateAmount }) {
   function increment(product) {
     updateAmount(product.id, product.amount + 1);
   }
@@ -57,13 +58,13 @@ function Cart({ cart, removeFromCart, updateAmount }) {
                 <AmountInput value={String(product.amount)} />
                 <Icon name="add" onPress={() => increment(product)} />
               </AmountItem>
-              <SubTotal>R$539,70</SubTotal>
+              <SubTotal>{product.subtotal}</SubTotal>
             </ItemTotal>
           </ItemCart>
         ))}
         <TotalCart>
           <TotalLabel>TOTAL</TotalLabel>
-          <Total>R$ 1619,10</Total>
+          <Total>{total}</Total>
         </TotalCart>
         <ButtonFinalizar>
           <FinalizarText>FINALIZAR PEDIDO</FinalizarText>
@@ -74,7 +75,15 @@ function Cart({ cart, removeFromCart, updateAmount }) {
 }
 
 const mapStateToProps = state => ({
-  cart: state.cart,
+  cart: state.cart.map(product => ({
+    ...product,
+    subtotal: formatPrice(product.price * product.amount),
+  })),
+  total: formatPrice(
+    state.cart.reduce((total, product) => {
+      return total + product.price * product.amount;
+    }, 0)
+  ),
 });
 
 const mapDispatchToProps = dispatch =>
