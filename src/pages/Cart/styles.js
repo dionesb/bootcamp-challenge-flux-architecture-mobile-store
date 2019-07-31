@@ -22,12 +22,7 @@ export const ItemInfo = styled.View`
   align-items: center;
 `;
 
-export const Image = styled.Image.attrs({
-  source: {
-    uri:
-      'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg',
-  },
-})`
+export const Image = styled.Image`
   width: 80px;
   height: 80px;
 `;

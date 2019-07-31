@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 
 import {
   Container,
@@ -21,112 +22,43 @@ import {
   FinalizarText,
 } from './styles';
 
-export default class Cart extends Component {
-  state = {};
-
-  render() {
-    return (
-      <Container>
-        <Wrapper>
-          <ItemCart>
+function Cart({ cart }) {
+  return (
+    <Container>
+      <Wrapper>
+        {cart.map(product => (
+          <ItemCart key={product.id}>
             <ItemInfo>
-              <Image />
+              <Image source={{ uri: product.image }} />
               <Info>
-                <Description>Tênis de Caminhada Leve Confrotável</Description>
-                <Price>R$179,90</Price>
+                <Description>{product.title}</Description>
+                <Price>{product.priceFormatted}</Price>
               </Info>
             </ItemInfo>
             <ItemTotal>
               <AmountItem>
                 <Icon name="remove" />
-                <AmountInput value={String(2)} />
+                <AmountInput value={String(product.amount)} />
                 <Icon name="add" />
               </AmountItem>
               <SubTotal>R$539,70</SubTotal>
             </ItemTotal>
           </ItemCart>
-
-          <ItemCart>
-            <ItemInfo>
-              <Image />
-              <Info>
-                <Description>Tênis de Caminhada Leve Confrotável</Description>
-                <Price>R$179,90</Price>
-              </Info>
-            </ItemInfo>
-            <ItemTotal>
-              <AmountItem>
-                <Icon name="remove" />
-                <AmountInput value={String(2)} />
-                <Icon name="add" />
-              </AmountItem>
-              <SubTotal>R$539,70</SubTotal>
-            </ItemTotal>
-          </ItemCart>
-
-          <ItemCart>
-            <ItemInfo>
-              <Image />
-              <Info>
-                <Description>Tênis de Caminhada Leve Confrotável</Description>
-                <Price>R$179,90</Price>
-              </Info>
-            </ItemInfo>
-            <ItemTotal>
-              <AmountItem>
-                <Icon name="remove" />
-                <AmountInput value={String(2)} />
-                <Icon name="add" />
-              </AmountItem>
-              <SubTotal>R$539,70</SubTotal>
-            </ItemTotal>
-          </ItemCart>
-
-          <ItemCart>
-            <ItemInfo>
-              <Image />
-              <Info>
-                <Description>Tênis de Caminhada Leve Confrotável</Description>
-                <Price>R$179,90</Price>
-              </Info>
-            </ItemInfo>
-            <ItemTotal>
-              <AmountItem>
-                <Icon name="remove" />
-                <AmountInput value={String(2)} />
-                <Icon name="add" />
-              </AmountItem>
-              <SubTotal>R$539,70</SubTotal>
-            </ItemTotal>
-          </ItemCart>
-
-          <ItemCart>
-            <ItemInfo>
-              <Image />
-              <Info>
-                <Description>Tênis de Caminhada Leve Confrotável</Description>
-                <Price>R$179,90</Price>
-              </Info>
-            </ItemInfo>
-            <ItemTotal>
-              <AmountItem>
-                <Icon name="remove" />
-                <AmountInput value={String(2)} />
-                <Icon name="add" />
-              </AmountItem>
-              <SubTotal>R$539,70</SubTotal>
-            </ItemTotal>
-          </ItemCart>
-
-          <TotalCart>
-            <TotalLabel>TOTAL</TotalLabel>
-            <Total>R$ 1619,10</Total>
-          </TotalCart>
-          <ButtonFinalizar>
-            <FinalizarText>FINALIZAR PEDIDO</FinalizarText>
-          </ButtonFinalizar>
-        </Wrapper>
-      </Container>
-    );
-  }
+        ))}
+        <TotalCart>
+          <TotalLabel>TOTAL</TotalLabel>
+          <Total>R$ 1619,10</Total>
+        </TotalCart>
+        <ButtonFinalizar>
+          <FinalizarText>FINALIZAR PEDIDO</FinalizarText>
+        </ButtonFinalizar>
+      </Wrapper>
+    </Container>
+  );
 }
+
+const mapStateToProps = state => ({
+  cart: state.cart,
+});
+
+export default connect(mapStateToProps)(Cart);
