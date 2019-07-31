@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { FlatList, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { formatPrice } from '../../util/format';
@@ -15,7 +16,11 @@ import {
   ItensQtde,
 } from './styles';
 
-export default class Home extends Component {
+class Home extends Component {
+  navigationOptions = {
+    title: 'Home',
+  };
+
   state = {
     products: [],
   };
@@ -33,6 +38,15 @@ export default class Home extends Component {
     });
   }
 
+  handleAddProduct = product => {
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'ADD_TO_CART',
+      product,
+    });
+  };
+
   render() {
     const { products } = this.state;
 
@@ -47,7 +61,7 @@ export default class Home extends Component {
               <ItemImage source={{ uri: item.image }} />
               <Title numberOfLines={2}>{item.title}</Title>
               <Price>{item.priceFormatted}</Price>
-              <Button>
+              <Button onPress={() => this.handleAddProduct(item)}>
                 <ItensQtde>
                   <Icon name="add-shopping-cart" size={20} color="#FFF" />
                   <Text style={{ marginLeft: 5, color: '#FFF' }}>2</Text>
@@ -71,6 +85,4 @@ export default class Home extends Component {
   }
 }
 
-Home.navigationOptions = {
-  title: 'Home',
-};
+export default connect()(Home);
