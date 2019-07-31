@@ -26,7 +26,15 @@ import {
   FinalizarText,
 } from './styles';
 
-function Cart({ cart, removeFromCart }) {
+function Cart({ cart, removeFromCart, updateAmount }) {
+  function increment(product) {
+    updateAmount(product.id, product.amount + 1);
+  }
+
+  function decrement(product) {
+    updateAmount(product.id, product.amount - 1);
+  }
+
   return (
     <Container>
       <Wrapper>
@@ -45,9 +53,9 @@ function Cart({ cart, removeFromCart }) {
             </ItemInfo>
             <ItemTotal>
               <AmountItem>
-                <Icon name="remove" />
+                <Icon name="remove" onPress={() => decrement(product)} />
                 <AmountInput value={String(product.amount)} />
-                <Icon name="add" />
+                <Icon name="add" onPress={() => increment(product)} />
               </AmountItem>
               <SubTotal>R$539,70</SubTotal>
             </ItemTotal>
