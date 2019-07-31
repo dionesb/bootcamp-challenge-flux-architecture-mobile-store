@@ -15,12 +15,18 @@ export const Wrapper = styled.View`
   margin-bottom: 30px;
 `;
 
-export const ItemCart = styled.View``;
+export const ItemCart = styled.View`
+  margin-top: 20px;
+`;
 
 export const ItemInfo = styled.View`
   flex-direction: row;
-  align-items: center;
 `;
+
+export const IconDelete = styled(IconMaterial).attrs({
+  size: 20,
+  color: '#7159c1',
+})``;
 
 export const Image = styled.Image`
   width: 80px;
@@ -28,12 +34,16 @@ export const Image = styled.Image`
 `;
 
 export const Info = styled.View`
+  height: 80px;
   margin-left: 10px;
   width: 163px;
+
+  flex-grow: 1;
+  justify-content: space-between;
 `;
 
 export const Description = styled.Text.attrs({
-  numberOfLines: 2,
+  numberOfLines: 3,
 })`
   font-size: 14px;
   color: #333;
@@ -47,6 +57,7 @@ export const Price = styled.Text`
 `;
 
 export const ItemTotal = styled.View`
+  margin-top: 10px;
   background: #eee;
   border-radius: 4px;
   padding: 5px 15px;

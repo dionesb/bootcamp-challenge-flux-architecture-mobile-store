@@ -13,6 +13,7 @@ import {
   ItemTotal,
   AmountItem,
   Icon,
+  IconDelete,
   AmountInput,
   SubTotal,
   TotalCart,
@@ -22,7 +23,7 @@ import {
   FinalizarText,
 } from './styles';
 
-function Cart({ cart }) {
+function Cart({ cart, dispatch }) {
   return (
     <Container>
       <Wrapper>
@@ -34,6 +35,12 @@ function Cart({ cart }) {
                 <Description>{product.title}</Description>
                 <Price>{product.priceFormatted}</Price>
               </Info>
+              <IconDelete
+                name="delete"
+                onPress={() =>
+                  dispatch({ type: 'REMOVE_FROM_CART', id: product.id })
+                }
+              />
             </ItemInfo>
             <ItemTotal>
               <AmountItem>
