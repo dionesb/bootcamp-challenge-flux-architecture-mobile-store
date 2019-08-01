@@ -41,10 +41,10 @@ class Home extends Component {
     });
   }
 
-  handleAddProduct = product => {
-    const { addToCart } = this.props;
+  handleAddProduct = id => {
+    const { addToCartRequest } = this.props;
 
-    addToCart(product);
+    addToCartRequest(id);
   };
 
   render() {
@@ -65,7 +65,7 @@ class Home extends Component {
                 <ItemImage source={{ uri: item.image }} />
                 <Title numberOfLines={2}>{item.title}</Title>
                 <Price>{item.priceFormatted}</Price>
-                <Button onPress={() => this.handleAddProduct(item)}>
+                <Button onPress={() => this.handleAddProduct(item.id)}>
                   <ItensQtde>
                     <Icon name="add-shopping-cart" size={20} color="#FFF" />
                     <Text style={{ marginLeft: 5, color: '#FFF' }}>
