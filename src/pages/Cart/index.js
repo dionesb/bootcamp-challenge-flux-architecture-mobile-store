@@ -24,6 +24,8 @@ import {
   Total,
   ButtonFinalizar,
   FinalizarText,
+  EmptyCart,
+  EmptyText,
 } from './styles';
 import { formatPrice } from '../../util/format';
 
@@ -39,36 +41,45 @@ function Cart({ cart, total, removeFromCart, updateAmountRequest }) {
   return (
     <Container>
       <Wrapper>
-        {cart.map(product => (
-          <ItemCart key={product.id}>
-            <ItemInfo>
-              <Image source={{ uri: product.image }} />
-              <Info>
-                <Description>{product.title}</Description>
-                <Price>{product.priceFormatted}</Price>
-              </Info>
-              <IconDelete
-                name="delete"
-                onPress={() => removeFromCart(product.id)}
-              />
-            </ItemInfo>
-            <ItemTotal>
-              <AmountItem>
-                <Icon name="remove" onPress={() => decrement(product)} />
-                <AmountInput value={String(product.amount)} />
-                <Icon name="add" onPress={() => increment(product)} />
-              </AmountItem>
-              <SubTotal>{product.subtotal}</SubTotal>
-            </ItemTotal>
-          </ItemCart>
-        ))}
-        <TotalCart>
-          <TotalLabel>TOTAL</TotalLabel>
-          <Total>{total}</Total>
-        </TotalCart>
-        <ButtonFinalizar>
-          <FinalizarText>FINALIZAR PEDIDO</FinalizarText>
-        </ButtonFinalizar>
+        {cart.length > 0 ? (
+          <>
+            {cart.map(product => (
+              <ItemCart key={product.id}>
+                <ItemInfo>
+                  <Image source={{ uri: product.image }} />
+                  <Info>
+                    <Description>{product.title}</Description>
+                    <Price>{product.priceFormatted}</Price>
+                  </Info>
+                  <IconDelete
+                    name="delete"
+                    onPress={() => removeFromCart(product.id)}
+                  />
+                </ItemInfo>
+                <ItemTotal>
+                  <AmountItem>
+                    <Icon name="remove" onPress={() => decrement(product)} />
+                    <AmountInput value={String(product.amount)} />
+                    <Icon name="add" onPress={() => increment(product)} />
+                  </AmountItem>
+                  <SubTotal>{product.subtotal}</SubTotal>
+                </ItemTotal>
+              </ItemCart>
+            ))}
+            <TotalCart>
+              <TotalLabel>TOTAL</TotalLabel>
+              <Total>{total}</Total>
+            </TotalCart>
+            <ButtonFinalizar>
+              <FinalizarText>FINALIZAR PEDIDO</FinalizarText>
+            </ButtonFinalizar>
+          </>
+        ) : (
+          <EmptyCart>
+            <Icon name="remove-shopping-cart" size={64} color="#eee" />
+            <EmptyText>Seu carrinho está vazio.</EmptyText>
+          </EmptyCart>
+        )}
       </Wrapper>
     </Container>
   );

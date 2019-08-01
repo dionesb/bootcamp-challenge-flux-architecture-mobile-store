@@ -128,3 +128,15 @@ export const FinalizarText = styled.Text`
   font-weight: bold;
   color: #fff;
 `;
+
+export const EmptyCart = styled.View`
+  align-items: center;
+  padding: 30px 0;
+`;
+
+export const EmptyText = styled.Text`
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+`;
