@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { FlatList, Text } from 'react-native';
@@ -19,77 +19,65 @@ import {
   ItensQtde,
 } from './styles';
 
-class Home extends Component {
-  navigationOptions = {
-    title: 'Home',
-  };
+function Home({ amount, addToCartRequest }) {
+  const [products, setProducts] = useState([]);
 
-  state = {
-    products: [],
-  };
+  useEffect(() => {
+    /* Cria-se uma nova função para trabalhar com async. */
+    async function loadProduct() {
+      const response = await api.get('/products');
+      const data = response.data.map(product => ({
+        ...product,
+        priceFormatted: formatPrice(product.price),
+      }));
 
-  async componentDidMount() {
-    console.tron.log('componentDidMount');
-    const response = await api.get('/products');
-    const data = response.data.map(product => ({
-      ...product,
-      priceFormatted: formatPrice(product.price),
-    }));
+      setProducts(data);
+    }
 
-    this.setState({
-      products: data,
-    });
-  }
+    loadProduct();
+  }, []);
 
-  handleAddProduct = id => {
-    const { addToCartRequest } = this.props;
-
+  function handleAddProduct(id) {
     addToCartRequest(id);
-  };
-
-  render() {
-    const { products } = this.state;
-
-    return (
-      <Container>
-        <FlatList
-          horizontal
-          data={products}
-          extraData={this.props}
-          keyExtractor={product => String(product.id)}
-          renderItem={({ item }) => {
-            const { amount } = this.props;
-
-            return (
-              <ItemProduct>
-                <ItemImage source={{ uri: item.image }} />
-                <Title numberOfLines={2}>{item.title}</Title>
-                <Price>{item.priceFormatted}</Price>
-                <Button onPress={() => this.handleAddProduct(item.id)}>
-                  <ItensQtde>
-                    <Icon name="add-shopping-cart" size={20} color="#FFF" />
-                    <Text style={{ marginLeft: 5, color: '#FFF' }}>
-                      {amount[item.id] || 0}
-                    </Text>
-                  </ItensQtde>
-                  <Text
-                    style={{
-                      color: '#FFF',
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                      width: 147,
-                    }}
-                  >
-                    ADICIONAR
-                  </Text>
-                </Button>
-              </ItemProduct>
-            );
-          }}
-        />
-      </Container>
-    );
   }
+
+  return (
+    <Container>
+      <FlatList
+        horizontal
+        data={products}
+        extraData={amount}
+        keyExtractor={product => String(product.id)}
+        renderItem={({ item }) => {
+          return (
+            <ItemProduct>
+              <ItemImage source={{ uri: item.image }} />
+              <Title numberOfLines={2}>{item.title}</Title>
+              <Price>{item.priceFormatted}</Price>
+              <Button onPress={() => handleAddProduct(item.id)}>
+                <ItensQtde>
+                  <Icon name="add-shopping-cart" size={20} color="#FFF" />
+                  <Text style={{ marginLeft: 5, color: '#FFF' }}>
+                    {amount[item.id] || 0}
+                  </Text>
+                </ItensQtde>
+                <Text
+                  style={{
+                    color: '#FFF',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    width: 147,
+                  }}
+                >
+                  ADICIONAR
+                </Text>
+              </Button>
+            </ItemProduct>
+          );
+        }}
+      />
+    </Container>
+  );
 }
 
 const mapStateToProps = state => ({
